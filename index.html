@@ -6,90 +6,153 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <style>
-    :root{
-      --radius: 18px;
-      --shadow: 0 20px 55px rgba(0,0,0,.45);
-    }
-
     *{ box-sizing:border-box; margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
 
     body{
-      min-height: 100vh;
-      min-height: 100svh; /* mejor en mobile */
+      min-height: 100svh;
       background: radial-gradient(1200px 800px at 20% 10%, rgba(255,255,255,.10), transparent 60%),
                   linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color:#fff;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 18px 14px 22px;
+      padding: 18px;
     }
 
-    .wrap{
-      width: min(980px, 100%);
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      align-items:center;
-    }
-
-    header{
+    /* ===== LOGIN ===== */
+    .login{
       width:100%;
+      max-width:380px;
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 26px 22px 26px;
+      box-shadow: 0 25px 60px rgba(0,0,0,.45);
       text-align:center;
-      padding: 6px 8px 2px;
+      animation: fadeIn .6s ease;
     }
 
-    h1{
+    .login h1{
+      font-size: 26px;
+      margin-bottom: 6px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    .login p{
+      opacity:.85;
+      font-size: 14px;
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .hint{
+      margin: 10px 0 16px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      text-align:left;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .hint .label{
+      opacity:.85;
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    .integral{
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: .2px;
+    }
+
+    .login input{
+      width:100%;
+      padding: 14px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color:#fff;
+      outline: none;
+      font-size: 16px;
+      text-align:center;
+      margin-bottom: 12px;
+    }
+
+    .login input::placeholder{ color: rgba(255,255,255,.6); }
+
+    .login button{
+      width:100%;
+      padding: 13px 12px;
+      border-radius: 12px;
+      border: none;
+      background: #ffffff;
+      color:#000;
       font-weight:700;
-      letter-spacing:.5px;
-      font-size: clamp(22px, 5vw, 34px);
-      line-height:1.1;
+      font-size: 15px;
+      cursor:pointer;
+      transition: transform .15s ease, opacity .25s ease;
+      touch-action: manipulation;
+    }
+    .login button:active{ transform: scale(.98); }
+
+    .error{
+      margin-top: 10px;
+      font-size: 13px;
+      color: #ffb3b3;
+      display:none;
     }
 
-    p{
-      opacity:.82;
-      margin-top: 6px;
-      font-size: clamp(13px, 3.5vw, 16px);
+    /* ===== MAIN CONTENT ===== */
+    .wrap{
+      width:100%;
+      max-width:980px;
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      animation: fadeIn .7s ease;
     }
+
+    header{ text-align:center; padding: 6px 8px 2px; }
+    header h1{ font-size: clamp(22px, 5vw, 34px); line-height: 1.1; }
+    header p{ opacity:.8; font-size: clamp(13px, 3.5vw, 16px); margin-top: 6px; }
 
     .slider-container{
       width:100%;
-      border-radius: var(--radius);
+      height: clamp(360px, 72svh, 640px);
+      border-radius: 18px;
       overflow:hidden;
-      box-shadow: var(--shadow);
-      position:relative;
       background: rgba(0,0,0,.18);
       backdrop-filter: blur(8px);
-
-      /* Altura adaptable: en teléfono ocupa buena parte de pantalla */
-      height: clamp(360px, 72svh, 640px);
+      box-shadow: 0 20px 55px rgba(0,0,0,.45);
+      position:relative;
     }
 
     .slider{
       height:100%;
       display:flex;
-      transition: transform 700ms cubic-bezier(.22, 1, .36, 1);
+      transition: transform .7s cubic-bezier(.22,1,.36,1);
       will-change: transform;
     }
 
-    .slide{
-      min-width:100%;
-      height:100%;
-      position:relative;
-    }
-
+    .slide{ min-width:100%; height:100%; }
     .slide img{
       width:100%;
       height:100%;
-      object-fit: cover;         /* llena sin deformar */
-      object-position: center;   /* centra la foto */
-      display:block;
+      object-fit:cover;
+      object-position:center;
+      pointer-events:none;
       user-select:none;
-      -webkit-user-drag: none;
-      pointer-events:none;       /* para que el swipe sea más limpio */
+      -webkit-user-drag:none;
+      display:block;
     }
 
-    /* Overlay sutil para que dots/botones se vean siempre */
     .fade-bottom{
       position:absolute;
       inset:auto 0 0 0;
@@ -100,7 +163,7 @@
 
     .controls{
       position:absolute;
-      inset: 0;
+      inset:0;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -110,74 +173,80 @@
 
     .control-btn{
       pointer-events:auto;
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.38);
+      width: 40px;
+      height: 40px;
+      border-radius:50%;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
       color:#fff;
-      font-size: 26px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      font-size: 24px;
       cursor:pointer;
-      transition: transform .15s, background .25s;
       touch-action: manipulation;
     }
-
-    .control-btn:active{ transform: scale(.95); }
-
-    /* En móvil: botones menos invasivos */
-    @media (max-width: 640px){
-      .control-btn{
-        width: 40px;
-        height: 40px;
-        font-size: 24px;
-        background: rgba(0,0,0,.30);
-      }
-    }
+    .control-btn:active{ transform: scale(.97); }
 
     .dots{
       position:absolute;
+      bottom:12px;
       left:50%;
-      bottom: 12px;
-      transform: translateX(-50%);
+      transform:translateX(-50%);
       display:flex;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 999px;
+      gap:10px;
       background: rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.14);
+      padding:8px 10px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,.12);
       backdrop-filter: blur(8px);
     }
 
     .dot{
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.40);
-      transition: transform .25s, background .25s;
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background: rgba(255,255,255,.4);
       cursor:pointer;
+      transition: transform .25s, background .25s;
       touch-action: manipulation;
     }
 
     .dot.active{
-      background: #fff;
+      background:#fff;
       transform: scale(1.35);
     }
 
     footer{
-      width:100%;
-      text-align:center;
+      font-size:12px;
       opacity:.6;
-      font-size: 12px;
-      padding-top: 4px;
+      margin-top:4px;
+      text-align:center;
+    }
+
+    @keyframes fadeIn{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+
+  <!-- LOGIN -->
+  <div class="login" id="login">
+    <h1>Acceso</h1>
+    <p>Ingresa la contraseña para ver la presentación.</p>
+
+    <div class="hint">
+      <div class="label">La contraseña es la solución de:</div>
+      <div class="integral">∫<sub>0</sub><sup>2</sup> x dx</div>
+    </div>
+
+    <input type="password" id="password" placeholder="Respuesta numérica" inputmode="numeric">
+    <button id="btnEnter">Entrar</button>
+    <div class="error" id="error">Respuesta incorrecta</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="wrap" id="main">
     <header>
       <h1>Julian</h1>
       <p>Mi recorrido, contado en imágenes</p>
@@ -210,16 +279,53 @@
   </div>
 
   <script>
-    const slider = document.getElementById('slider');
-    const slides = document.querySelectorAll('.slide');
-    const dotsContainer = document.getElementById('dots');
-    const sliderContainer = document.getElementById('sliderContainer');
+    /* ===== PASSWORD (solución de la integral) =====
+       Integral: ∫_0^2 x dx = [x^2/2]_0^2 = 2
+    */
+    const ANSWER = "2";
 
+    const loginEl = document.getElementById("login");
+    const mainEl  = document.getElementById("main");
+    const passEl  = document.getElementById("password");
+    const errEl   = document.getElementById("error");
+    const btnEnter= document.getElementById("btnEnter");
+
+    btnEnter.addEventListener("click", checkAnswer);
+    passEl.addEventListener("keydown", (e) => { if (e.key === "Enter") checkAnswer(); });
+
+    function checkAnswer(){
+      const value = (passEl.value || "").trim();
+      if(value === ANSWER){
+        errEl.style.display = "none";
+        loginEl.style.display = "none";
+        mainEl.style.display = "flex";
+        initSlider();
+      }else{
+        errEl.style.display = "block";
+      }
+    }
+
+    /* ===== SLIDER ===== */
+    let slider, slides, dotsContainer, sliderContainer;
     let index = 0;
     let interval = null;
     let isInteracting = false;
 
+    function initSlider(){
+      slider = document.getElementById('slider');
+      slides = document.querySelectorAll('.slide');
+      dotsContainer = document.getElementById('dots');
+      sliderContainer = document.getElementById('sliderContainer');
+
+      createDots();
+      goToSlide(0, false);
+      startAutoSlide();
+      addControls();
+      addSwipe();
+    }
+
     function createDots(){
+      dotsContainer.innerHTML = "";
       slides.forEach((_, i) => {
         const dot = document.createElement('div');
         dot.className = 'dot';
@@ -255,48 +361,44 @@
       startAutoSlide();
     }
 
-    // Teclado (para laptop)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') nextSlide();
-      if (e.key === 'ArrowLeft') prevSlide();
-    });
+    function addControls(){
+      document.addEventListener('keydown', (e) => {
+        if (mainEl.style.display !== "flex") return;
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+      });
 
-    // Swipe (mobile)
-    let startX = 0;
-    let currentX = 0;
-    let tracking = false;
+      sliderContainer.addEventListener('mouseenter', () => isInteracting = true);
+      sliderContainer.addEventListener('mouseleave', () => { isInteracting = false; });
+    }
 
-    sliderContainer.addEventListener('touchstart', (e) => {
-      isInteracting = true;
-      tracking = true;
-      startX = e.touches[0].clientX;
-      currentX = startX;
-    }, { passive: true });
+    function addSwipe(){
+      let startX = 0, currentX = 0, tracking = false;
 
-    sliderContainer.addEventListener('touchmove', (e) => {
-      if (!tracking) return;
-      currentX = e.touches[0].clientX;
-    }, { passive: true });
+      sliderContainer.addEventListener('touchstart', (e) => {
+        isInteracting = true;
+        tracking = true;
+        startX = e.touches[0].clientX;
+        currentX = startX;
+      }, { passive: true });
 
-    sliderContainer.addEventListener('touchend', () => {
-      if (!tracking) return;
-      const diff = currentX - startX;
-      const threshold = 50; // sensibilidad del swipe
-      if (diff > threshold) prevSlide();
-      else if (diff < -threshold) nextSlide();
+      sliderContainer.addEventListener('touchmove', (e) => {
+        if (!tracking) return;
+        currentX = e.touches[0].clientX;
+      }, { passive: true });
 
-      tracking = false;
-      isInteracting = false;
-      resetInterval();
-    });
-
-    // También pausar cuando el dedo está encima (mouse)
-    sliderContainer.addEventListener('mouseenter', () => isInteracting = true);
-    sliderContainer.addEventListener('mouseleave', () => { isInteracting = false; });
-
-    createDots();
-    goToSlide(0, false);
-    startAutoSlide();
+      sliderContainer.addEventListener('touchend', () => {
+        if (!tracking) return;
+        const diff = currentX - startX;
+        const threshold = 50;
+        if (diff > threshold) prevSlide();
+        else if (diff < -threshold) nextSlide();
+        tracking = false;
+        isInteracting = false;
+        resetInterval();
+      });
+    }
   </script>
 </body>
 </html>
+
