@@ -6,101 +6,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <style>
-    *{ box-sizing:border-box; margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    :root{
+      --glass: rgba(255,255,255,.10);
+      --glass2: rgba(0,0,0,.30);
+      --border: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --radius: 20px;
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+    }
 
+    *{ box-sizing:border-box; margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    html,body{ height:100%; }
     body{
       min-height: 100svh;
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,255,255,.10), transparent 60%),
-                  linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color:#fff;
+      color: var(--text);
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 18px;
+      padding: 18px 14px 22px;
+      background: #0b1f26;
+      overflow-x:hidden;
+    }
+
+    /* Fondo dinámico (blur) */
+    .bg{
+      position: fixed;
+      inset: -60px;
+      background-size: cover;
+      background-position: center;
+      filter: blur(24px) saturate(1.2);
+      transform: scale(1.08);
+      opacity: .35;
+      z-index: -2;
+    }
+    .bgOverlay{
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(1000px 700px at 15% 10%, rgba(255,255,255,.12), transparent 60%),
+        radial-gradient(900px 700px at 80% 20%, rgba(255,255,255,.08), transparent 55%),
+        linear-gradient(135deg, rgba(8,22,28,.92), rgba(8,22,28,.72));
+      z-index: -1;
     }
 
     /* ===== LOGIN ===== */
     .login{
-      width:100%;
-      max-width:380px;
+      width: min(420px, 100%);
       background: rgba(0,0,0,.35);
-      backdrop-filter: blur(12px);
-      border-radius: 18px;
-      padding: 26px 22px 26px;
-      box-shadow: 0 25px 60px rgba(0,0,0,.45);
-      text-align:center;
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px 18px;
       animation: fadeIn .6s ease;
     }
-
-    .login h1{
-      font-size: 26px;
-      margin-bottom: 6px;
-      font-weight: 700;
-      letter-spacing: .3px;
+    .loginTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 10px;
     }
-
-    .login p{
-      opacity:.85;
-      font-size: 14px;
-      margin-bottom: 14px;
-      line-height: 1.35;
-    }
-
-    .hint{
-      margin: 10px 0 16px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.12);
-      text-align:left;
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .hint .label{
-      opacity:.85;
+    .pill{
       font-size: 12px;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: .6px;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      padding: 8px 10px;
+      border-radius: 999px;
     }
-
+    .login h1{
+      font-size: 22px;
+      letter-spacing: .3px;
+      margin-bottom: 2px;
+    }
+    .login p{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .hint{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      border-radius: 16px;
+      padding: 12px 12px;
+      margin-bottom: 12px;
+      text-align:left;
+    }
+    .hint .label{
+      font-size: 11px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.70);
+      margin-bottom: 6px;
+    }
     .integral{
       font-size: 18px;
-      font-weight: 650;
-      letter-spacing: .2px;
+      font-weight: 700;
     }
-
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
     .login input{
       width:100%;
-      padding: 14px 12px;
-      border-radius: 12px;
+      padding: 13px 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.22);
-      color:#fff;
+      color: #fff;
       outline: none;
       font-size: 16px;
       text-align:center;
-      margin-bottom: 12px;
     }
-
-    .login input::placeholder{ color: rgba(255,255,255,.6); }
-
+    .login input::placeholder{ color: rgba(255,255,255,.55); }
     .login button{
       width:100%;
       padding: 13px 12px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: none;
       background: #ffffff;
       color:#000;
-      font-weight:700;
-      font-size: 15px;
+      font-weight: 800;
+      font-size: 14px;
       cursor:pointer;
       transition: transform .15s ease, opacity .25s ease;
       touch-action: manipulation;
     }
     .login button:active{ transform: scale(.98); }
-
     .error{
       margin-top: 10px;
       font-size: 13px;
@@ -108,59 +144,145 @@
       display:none;
     }
 
-    /* ===== MAIN CONTENT ===== */
+    /* ===== MAIN ===== */
     .wrap{
-      width:100%;
-      max-width:980px;
+      width: min(1040px, 100%);
       display:none;
       flex-direction:column;
-      align-items:center;
-      gap:10px;
+      gap: 12px;
       animation: fadeIn .7s ease;
     }
 
-    header{ text-align:center; padding: 6px 8px 2px; }
-    header h1{ font-size: clamp(22px, 5vw, 34px); line-height: 1.1; }
-    header p{ opacity:.8; font-size: clamp(13px, 3.5vw, 16px); margin-top: 6px; }
+    header{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      gap: 4px;
+      padding: 4px 8px 0;
+    }
+    header h1{
+      font-size: clamp(22px, 5vw, 34px);
+      letter-spacing: .4px;
+      line-height: 1.1;
+      font-weight: 900;
+    }
+    header p{
+      font-size: clamp(13px, 3.5vw, 16px);
+      color: var(--muted);
+    }
+
+    .card{
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position: relative;
+    }
 
     .slider-container{
-      width:100%;
-      height: clamp(360px, 72svh, 640px);
-      border-radius: 18px;
-      overflow:hidden;
-      background: rgba(0,0,0,.18);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 20px 55px rgba(0,0,0,.45);
-      position:relative;
+      height: clamp(380px, 72svh, 680px);
     }
 
     .slider{
       height:100%;
       display:flex;
-      transition: transform .7s cubic-bezier(.22,1,.36,1);
+      transition: transform 700ms cubic-bezier(.22, 1, .36, 1);
       will-change: transform;
     }
 
-    .slide{ min-width:100%; height:100%; }
+    .slide{
+      min-width:100%;
+      height:100%;
+      position: relative;
+    }
+
     .slide img{
       width:100%;
       height:100%;
-      object-fit:cover;
-      object-position:center;
-      pointer-events:none;
+      object-fit: cover;
+      object-position: center;
+      display:block;
       user-select:none;
       -webkit-user-drag:none;
-      display:block;
-    }
-
-    .fade-bottom{
-      position:absolute;
-      inset:auto 0 0 0;
-      height: 90px;
-      background: linear-gradient(to top, rgba(0,0,0,.55), transparent);
       pointer-events:none;
     }
 
+    /* Sombras para legibilidad */
+    .fadeTop{
+      position:absolute;
+      inset:0 0 auto 0;
+      height: 120px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.55), transparent);
+      pointer-events:none;
+    }
+    .fadeBottom{
+      position:absolute;
+      inset:auto 0 0 0;
+      height: 140px;
+      background: linear-gradient(to top, rgba(0,0,0,.65), transparent);
+      pointer-events:none;
+    }
+
+    /* Barra de progreso */
+    .progress{
+      position:absolute;
+      left: 14px;
+      right: 14px;
+      top: 12px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .progress > div{
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      transition: width .35s ease;
+    }
+
+    /* Controles superiores */
+    .topbar{
+      position:absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      pointer-events:none;
+    }
+    .topbar .group{
+      display:flex;
+      gap:10px;
+      pointer-events:auto;
+    }
+
+    .btn{
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.28);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor:pointer;
+      backdrop-filter: blur(10px);
+      transition: transform .15s ease, background .25s ease;
+      touch-action: manipulation;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:active{ transform: scale(.98); }
+    .btn:hover{ background: rgba(255,255,255,.12); }
+
+    /* Flechas laterales */
     .controls{
       position:absolute;
       inset:0;
@@ -170,55 +292,133 @@
       padding: 0 10px;
       pointer-events:none;
     }
-
-    .control-btn{
+    .arrow{
       pointer-events:auto;
-      width: 40px;
-      height: 40px;
-      border-radius:50%;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
       border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.35);
+      background: rgba(0,0,0,.30);
       color:#fff;
       font-size: 24px;
       cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      backdrop-filter: blur(10px);
       touch-action: manipulation;
     }
-    .control-btn:active{ transform: scale(.97); }
 
+    /* Dots */
     .dots{
       position:absolute;
-      bottom:12px;
-      left:50%;
-      transform:translateX(-50%);
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
       display:flex;
-      gap:10px;
-      background: rgba(0,0,0,.35);
-      padding:8px 10px;
-      border-radius:999px;
-      border: 1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(8px);
+      gap: 9px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.30);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
     }
-
     .dot{
-      width:9px;
-      height:9px;
-      border-radius:50%;
-      background: rgba(255,255,255,.4);
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.40);
       cursor:pointer;
-      transition: transform .25s, background .25s;
+      transition: transform .2s ease, background .2s ease;
       touch-action: manipulation;
     }
-
     .dot.active{
-      background:#fff;
+      background: rgba(255,255,255,.95);
       transform: scale(1.35);
     }
 
+    /* Story / Caption */
+    .caption{
+      position:absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 64px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      transform: translateY(10px);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .caption.show{
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events:auto;
+    }
+    .caption .title{
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: .2px;
+    }
+    .caption .text{
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    /* Modal */
+    .modalBack{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 10;
+    }
+    .modal{
+      width: min(520px, 100%);
+      background: rgba(12,26,32,.72);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 14px;
+    }
+    .modal h2{
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .modal p{
+      color: rgba(255,255,255,.80);
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+    .modal .row2{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+
     footer{
-      font-size:12px;
-      opacity:.6;
-      margin-top:4px;
       text-align:center;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      padding: 2px 6px;
+    }
+
+    @media (max-width: 640px){
+      .arrow{ width: 40px; height: 40px; }
+      .btn{ padding: 9px 11px; font-size: 12px; }
+      .caption{ bottom: 62px; }
     }
 
     @keyframes fadeIn{
@@ -229,19 +429,28 @@
 </head>
 
 <body>
+  <div class="bg" id="bg"></div>
+  <div class="bgOverlay"></div>
 
   <!-- LOGIN -->
   <div class="login" id="login">
-    <h1>Acceso</h1>
-    <p>Ingresa la contraseña para ver la presentación.</p>
+    <div class="loginTop">
+      <div>
+        <h1>Acceso</h1>
+        <p>Ingresa la contraseña para ver la presentación.</p>
+      </div>
+      <div class="pill">Innovación</div>
+    </div>
 
     <div class="hint">
       <div class="label">La contraseña es la solución de:</div>
       <div class="integral">∫<sub>0</sub><sup>2</sup> x dx</div>
     </div>
 
-    <input type="password" id="password" placeholder="Respuesta numérica" inputmode="numeric">
-    <button id="btnEnter">Entrar</button>
+    <div class="row">
+      <input type="password" id="password" placeholder="Respuesta numérica" inputmode="numeric" />
+    </div>
+    <button id="btnEnter" style="margin-top:10px;">Entrar</button>
     <div class="error" id="error">Respuesta incorrecta</div>
   </div>
 
@@ -252,7 +461,25 @@
       <p>Mi recorrido, contado en imágenes</p>
     </header>
 
-    <main class="slider-container" id="sliderContainer" aria-label="Galería de fotos">
+    <section class="card slider-container" id="sliderContainer" aria-label="Galería de fotos">
+      <div class="fadeTop"></div>
+      <div class="fadeBottom"></div>
+
+      <div class="progress" aria-label="Progreso">
+        <div id="progressFill"></div>
+      </div>
+
+      <div class="topbar">
+        <div class="group">
+          <button class="btn" id="btnStory" aria-label="Modo historia">✨ Historia</button>
+          <button class="btn" id="btnInfo" aria-label="Información">ℹ️ Info</button>
+        </div>
+        <div class="group">
+          <button class="btn" id="btnPause" aria-label="Pausar/Reanudar">⏸️ Pausar</button>
+          <button class="btn" id="btnFull" aria-label="Pantalla completa">⛶ Full</button>
+        </div>
+      </div>
+
       <div class="slider" id="slider">
         <div class="slide"><img src="uno.png" alt="uno"></div>
         <div class="slide"><img src="dos.png" alt="dos"></div>
@@ -265,24 +492,57 @@
         <div class="slide"><img src="nueve.png" alt="nueve"></div>
       </div>
 
-      <div class="fade-bottom"></div>
-
       <div class="controls">
-        <button class="control-btn" onclick="prevSlide()" aria-label="Anterior">‹</button>
-        <button class="control-btn" onclick="nextSlide()" aria-label="Siguiente">›</button>
+        <button class="arrow" onclick="prevSlide()" aria-label="Anterior">‹</button>
+        <button class="arrow" onclick="nextSlide()" aria-label="Siguiente">›</button>
+      </div>
+
+      <div class="caption" id="captionBox" aria-label="Texto de historia">
+        <div class="title" id="capTitle">—</div>
+        <div class="text" id="capText">—</div>
       </div>
 
       <div class="dots" id="dots" aria-label="Indicadores"></div>
-    </main>
+    </section>
 
-    <footer>Innovación · Presentación personal</footer>
+    <footer>Tip: desliza con el dedo · toca “Historia” para ver el relato</footer>
+  </div>
+
+  <!-- MODAL INFO -->
+  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2>Sobre esta presentación</h2>
+      <p>
+        Esta página es una forma de presentarme de manera visual e interactiva.
+        La idea es que cada imagen represente una etapa, un aprendizaje o algo que me define.
+      </p>
+      <div class="row2">
+        <button class="btn" id="btnClose">Cerrar</button>
+        <a class="btn" href="CV.pdf" style="text-decoration:none;">📄 Ver CV</a>
+      </div>
+    </div>
   </div>
 
   <script>
-    /* ===== PASSWORD (solución de la integral) =====
-       Integral: ∫_0^2 x dx = [x^2/2]_0^2 = 2
+    /* ===== Contraseña (solución de integral) =====
+       ∫_0^2 x dx = [x^2/2]_0^2 = 2
     */
     const ANSWER = "2";
+
+    // Textos del “modo historia” (ajústalos como quieras)
+    const CAPTIONS = [
+      { title: "Inicio", text: "Un primer capítulo: curiosidad, energía y ganas de aprender." },
+      { title: "Cambio", text: "Una etapa que marcó crecimiento y nuevas formas de ver el mundo." },
+      { title: "Disciplina", text: "Constancia: lo que se repite se vuelve habilidad." },
+      { title: "Retos", text: "Momentos difíciles que terminaron construyendo carácter." },
+      { title: "Movimiento", text: "Explorar, crear, intentar: avanzar aunque no sea perfecto." },
+      { title: "Equipo", text: "Aprender con otros: apoyo, amistad y colaboración." },
+      { title: "Visión", text: "Más claridad sobre lo que quiero construir y mejorar." },
+      { title: "Presente", text: "Hoy: enfoque, metas y ganas de hacer cosas grandes." },
+      { title: "Siguiente paso", text: "Esto apenas empieza: lo mejor viene en camino." },
+    ];
+
+    const FILES = ["uno.png","dos.png","tres.png","cuatro.png","cinco.png","seis.png","siete.png","ocho.png","nueve.png"];
 
     const loginEl = document.getElementById("login");
     const mainEl  = document.getElementById("main");
@@ -305,11 +565,26 @@
       }
     }
 
-    /* ===== SLIDER ===== */
+    /* ===== Slider ===== */
     let slider, slides, dotsContainer, sliderContainer;
     let index = 0;
     let interval = null;
-    let isInteracting = false;
+    let paused = false;
+    let storyOn = false;
+
+    const bg = document.getElementById("bg");
+    const progressFill = document.getElementById("progressFill");
+    const captionBox = document.getElementById("captionBox");
+    const capTitle = document.getElementById("capTitle");
+    const capText = document.getElementById("capText");
+
+    const btnStory = document.getElementById("btnStory");
+    const btnInfo  = document.getElementById("btnInfo");
+    const btnPause = document.getElementById("btnPause");
+    const btnFull  = document.getElementById("btnFull");
+
+    const modalBack = document.getElementById("modalBack");
+    const btnClose = document.getElementById("btnClose");
 
     function initSlider(){
       slider = document.getElementById('slider');
@@ -320,8 +595,50 @@
       createDots();
       goToSlide(0, false);
       startAutoSlide();
-      addControls();
       addSwipe();
+      addKeyboard();
+      hookUI();
+    }
+
+    function hookUI(){
+      btnStory.addEventListener("click", () => {
+        storyOn = !storyOn;
+        btnStory.textContent = storyOn ? "✨ Historia: ON" : "✨ Historia";
+        updateCaption();
+      });
+
+      btnPause.addEventListener("click", () => {
+        paused = !paused;
+        btnPause.textContent = paused ? "▶️ Reanudar" : "⏸️ Pausar";
+      });
+
+      btnInfo.addEventListener("click", () => {
+        modalBack.style.display = "flex";
+      });
+
+      btnClose.addEventListener("click", () => {
+        modalBack.style.display = "none";
+      });
+
+      modalBack.addEventListener("click", (e) => {
+        if(e.target === modalBack) modalBack.style.display = "none";
+      });
+
+      btnFull.addEventListener("click", async () => {
+        try{
+          if(!document.fullscreenElement){
+            await sliderContainer.requestFullscreen();
+          }else{
+            await document.exitFullscreen();
+          }
+        }catch(_){}
+      });
+
+      // Tap en la imagen = alternar caption cuando story está activo
+      sliderContainer.addEventListener("click", () => {
+        if(!storyOn) return;
+        captionBox.classList.toggle("show");
+      });
     }
 
     function createDots(){
@@ -339,10 +656,33 @@
       dots.forEach((d, i) => d.classList.toggle('active', i === index));
     }
 
+    function updateBackground(){
+      bg.style.backgroundImage = `url('${FILES[index]}')`;
+    }
+
+    function updateProgress(){
+      const pct = ((index + 1) / slides.length) * 100;
+      progressFill.style.width = pct + "%";
+    }
+
+    function updateCaption(){
+      if(!storyOn){
+        captionBox.classList.remove("show");
+        return;
+      }
+      const c = CAPTIONS[index] || { title:"", text:"" };
+      capTitle.textContent = c.title;
+      capText.textContent = c.text;
+      captionBox.classList.add("show");
+    }
+
     function goToSlide(i, userAction=false){
       index = (i + slides.length) % slides.length;
       slider.style.transform = `translateX(-${index * 100}%)`;
       updateDots();
+      updateBackground();
+      updateProgress();
+      updateCaption();
       if (userAction) resetInterval();
     }
 
@@ -352,7 +692,7 @@
     function startAutoSlide(){
       clearInterval(interval);
       interval = setInterval(() => {
-        if (!isInteracting) goToSlide(index + 1, false);
+        if (!paused) goToSlide(index + 1, false);
       }, 4500);
     }
 
@@ -361,22 +701,20 @@
       startAutoSlide();
     }
 
-    function addControls(){
+    function addKeyboard(){
       document.addEventListener('keydown', (e) => {
         if (mainEl.style.display !== "flex") return;
         if (e.key === 'ArrowRight') nextSlide();
         if (e.key === 'ArrowLeft') prevSlide();
+        if (e.key.toLowerCase() === 'h') btnStory.click();
+        if (e.key.toLowerCase() === 'p') btnPause.click();
       });
-
-      sliderContainer.addEventListener('mouseenter', () => isInteracting = true);
-      sliderContainer.addEventListener('mouseleave', () => { isInteracting = false; });
     }
 
     function addSwipe(){
       let startX = 0, currentX = 0, tracking = false;
 
       sliderContainer.addEventListener('touchstart', (e) => {
-        isInteracting = true;
         tracking = true;
         startX = e.touches[0].clientX;
         currentX = startX;
@@ -394,11 +732,9 @@
         if (diff > threshold) prevSlide();
         else if (diff < -threshold) nextSlide();
         tracking = false;
-        isInteracting = false;
         resetInterval();
       });
     }
   </script>
 </body>
 </html>
-
