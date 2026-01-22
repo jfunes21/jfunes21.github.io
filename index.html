@@ -10,8 +10,10 @@
 
     body{
       min-height: 100svh;
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,255,255,.10), transparent 60%),
-                  linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      /* CAMBIO: esquema con acento #006853 */
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(0,104,83,.22), transparent 60%),
+        linear-gradient(135deg, #003b2f, #006853, #0a2f26);
       color:#fff;
       display:flex;
       align-items:center;
@@ -22,49 +24,87 @@
     /* ===== LOGIN ===== */
     .login{
       width:100%;
-      max-width:360px;
+      max-width:380px;
       background: rgba(0,0,0,.35);
       backdrop-filter: blur(12px);
       border-radius: 18px;
-      padding: 28px 24px 30px;
+      padding: 26px 22px 26px;
       box-shadow: 0 25px 60px rgba(0,0,0,.45);
       text-align:center;
       animation: fadeIn .6s ease;
+      border: 1px solid rgba(0,104,83,.35);
     }
 
     .login h1{
       font-size: 26px;
       margin-bottom: 6px;
+      font-weight: 700;
+      letter-spacing: .3px;
     }
 
     .login p{
-      opacity:.8;
+      opacity:.85;
       font-size: 14px;
-      margin-bottom: 22px;
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .hint{
+      margin: 10px 0 16px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(0,104,83,.45);
+      text-align:left;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .hint .label{
+      opacity:.85;
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: rgba(255,255,255,.85);
+    }
+
+    .integral{
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: .2px;
     }
 
     .login input{
       width:100%;
-      padding: 14px;
+      padding: 14px 12px;
       border-radius: 12px;
-      border: none;
+      border: 1px solid rgba(0,104,83,.45);
+      background: rgba(0,0,0,.22);
+      color:#fff;
       outline: none;
       font-size: 16px;
       text-align:center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
+
+    .login input::placeholder{ color: rgba(255,255,255,.6); }
 
     .login button{
       width:100%;
-      padding: 14px;
+      padding: 13px 12px;
       border-radius: 12px;
       border: none;
-      background: #ffffff;
-      color:#000;
-      font-weight:600;
+      background: #006853; /* CAMBIO */
+      color:#fff;          /* CAMBIO */
+      font-weight:700;
       font-size: 15px;
       cursor:pointer;
+      transition: transform .15s ease, opacity .25s ease, filter .2s ease;
+      touch-action: manipulation;
     }
+    .login button:hover{ filter: brightness(1.08); }
+    .login button:active{ transform: scale(.98); }
 
     .error{
       margin-top: 10px;
@@ -84,9 +124,9 @@
       animation: fadeIn .7s ease;
     }
 
-    header{text-align:center;}
-    header h1{ font-size: clamp(22px, 5vw, 34px); }
-    header p{ opacity:.8; font-size: 14px; }
+    header{ text-align:center; padding: 6px 8px 2px; }
+    header h1{ font-size: clamp(22px, 5vw, 34px); line-height: 1.1; }
+    header p{ opacity:.8; font-size: clamp(13px, 3.5vw, 16px); margin-top: 6px; }
 
     .slider-container{
       width:100%;
@@ -97,12 +137,14 @@
       backdrop-filter: blur(8px);
       box-shadow: 0 20px 55px rgba(0,0,0,.45);
       position:relative;
+      border: 1px solid rgba(0,104,83,.28);
     }
 
     .slider{
       height:100%;
       display:flex;
       transition: transform .7s cubic-bezier(.22,1,.36,1);
+      will-change: transform;
     }
 
     .slide{ min-width:100%; height:100%; }
@@ -110,8 +152,19 @@
       width:100%;
       height:100%;
       object-fit:cover;
+      object-position:center;
       pointer-events:none;
       user-select:none;
+      -webkit-user-drag:none;
+      display:block;
+    }
+
+    .fade-bottom{
+      position:absolute;
+      inset:auto 0 0 0;
+      height: 90px;
+      background: linear-gradient(to top, rgba(0,0,0,.55), transparent);
+      pointer-events:none;
     }
 
     .controls{
@@ -126,14 +179,19 @@
 
     .control-btn{
       pointer-events:auto;
-      width:40px;
-      height:40px;
+      width: 40px;
+      height: 40px;
       border-radius:50%;
-      border:none;
-      background: rgba(0,0,0,.4);
+      border: 1px solid rgba(0,104,83,.55); /* CAMBIO */
+      background: rgba(0,0,0,.35);
       color:#fff;
-      font-size:24px;
+      font-size: 24px;
+      cursor:pointer;
+      touch-action: manipulation;
+      transition: filter .2s ease;
     }
+    .control-btn:hover{ filter: brightness(1.08); }
+    .control-btn:active{ transform: scale(.97); }
 
     .dots{
       position:absolute;
@@ -145,6 +203,8 @@
       background: rgba(0,0,0,.35);
       padding:8px 10px;
       border-radius:999px;
+      border: 1px solid rgba(0,104,83,.45); /* CAMBIO */
+      backdrop-filter: blur(8px);
     }
 
     .dot{
@@ -152,17 +212,22 @@
       height:9px;
       border-radius:50%;
       background: rgba(255,255,255,.4);
+      cursor:pointer;
+      transition: transform .25s, background .25s;
+      touch-action: manipulation;
     }
 
     .dot.active{
-      background:#fff;
-      transform: scale(1.3);
+      background: #006853; /* CAMBIO */
+      transform: scale(1.35);
+      box-shadow: 0 0 0 3px rgba(0,104,83,.28);
     }
 
     footer{
       font-size:12px;
-      opacity:.6;
+      opacity:.7;
       margin-top:4px;
+      text-align:center;
     }
 
     @keyframes fadeIn{
@@ -177,10 +242,16 @@
   <!-- LOGIN -->
   <div class="login" id="login">
     <h1>Acceso</h1>
-    <p>Ingresa la contraseña para ver la presentación</p>
-    <input type="password" id="password" placeholder="Contraseña">
-    <button onclick="checkPassword()">Entrar</button>
-    <div class="error" id="error">Contraseña incorrecta</div>
+    <p>Ingresa la contraseña para ver la presentación.</p>
+
+    <div class="hint">
+      <div class="label">La contraseña es la solución de:</div>
+      <div class="integral">∫<sub>0</sub><sup>2</sup> x dx</div>
+    </div>
+
+    <input type="password" id="password" placeholder="Respuesta numérica" inputmode="numeric">
+    <button id="btnEnter">Entrar</button>
+    <div class="error" id="error">Respuesta incorrecta</div>
   </div>
 
   <!-- MAIN -->
@@ -190,44 +261,152 @@
       <p>Mi recorrido, contado en imágenes</p>
     </header>
 
-    <main class="slider-container" id="sliderContainer">
+    <main class="slider-container" id="sliderContainer" aria-label="Galería de fotos">
       <div class="slider" id="slider">
-        <div class="slide"><img src="uno.png"></div>
-        <div class="slide"><img src="dos.png"></div>
-        <div class="slide"><img src="tres.png"></div>
-        <div class="slide"><img src="cuatro.png"></div>
-        <div class="slide"><img src="cinco.png"></div>
-        <div class="slide"><img src="seis.png"></div>
-        <div class="slide"><img src="siete.png"></div>
-        <div class="slide"><img src="ocho.png"></div>
-        <div class="slide"><img src="nueve.png"></div>
+        <div class="slide"><img src="uno.png" alt="uno"></div>
+        <div class="slide"><img src="dos.png" alt="dos"></div>
+        <div class="slide"><img src="tres.png" alt="tres"></div>
+        <div class="slide"><img src="cuatro.png" alt="cuatro"></div>
+        <div class="slide"><img src="cinco.png" alt="cinco"></div>
+        <div class="slide"><img src="seis.png" alt="seis"></div>
+        <div class="slide"><img src="siete.png" alt="siete"></div>
+        <div class="slide"><img src="ocho.png" alt="ocho"></div>
+        <div class="slide"><img src="nueve.png" alt="nueve"></div>
       </div>
+
+      <div class="fade-bottom"></div>
 
       <div class="controls">
-        <button class="control-btn" onclick="prevSlide()">‹</button>
-        <button class="control-btn" onclick="nextSlide()">›</button>
+        <button class="control-btn" onclick="prevSlide()" aria-label="Anterior">‹</button>
+        <button class="control-btn" onclick="nextSlide()" aria-label="Siguiente">›</button>
       </div>
 
-      <div class="dots" id="dots"></div>
+      <div class="dots" id="dots" aria-label="Indicadores"></div>
     </main>
 
     <footer>Innovación · Presentación personal</footer>
   </div>
 
   <script>
-    /* ===== PASSWORD ===== */
-    const PASSWORD = "innovacion"; // ← CAMBIA AQUÍ
+    /* ===== PASSWORD (solución de la integral) =====
+       Integral: ∫_0^2 x dx = [x^2/2]_0^2 = 2
+    */
+    const ANSWER = "2";
 
-    function checkPassword(){
-      const input = document.getElementById("password").value;
-      const error = document.getElementById("error");
-      if(input === PASSWORD){
-        document.getElementById("login").style.display = "none";
-        document.getElementById("main").style.display = "flex";
+    const loginEl = document.getElementById("login");
+    const mainEl  = document.getElementById("main");
+    const passEl  = document.getElementById("password");
+    const errEl   = document.getElementById("error");
+    const btnEnter= document.getElementById("btnEnter");
+
+    btnEnter.addEventListener("click", checkAnswer);
+    passEl.addEventListener("keydown", (e) => { if (e.key === "Enter") checkAnswer(); });
+
+    function checkAnswer(){
+      const value = (passEl.value || "").trim();
+      if(value === ANSWER){
+        errEl.style.display = "none";
+        loginEl.style.display = "none";
+        mainEl.style.display = "flex";
         initSlider();
       }else{
-        error.style.display = "block";
+        errEl.style.display = "block";
       }
     }
 
-    document.getElement
+    /* ===== SLIDER ===== */
+    let slider, slides, dotsContainer, sliderContainer;
+    let index = 0;
+    let interval = null;
+    let isInteracting = false;
+
+    function initSlider(){
+      slider = document.getElementById('slider');
+      slides = document.querySelectorAll('.slide');
+      dotsContainer = document.getElementById('dots');
+      sliderContainer = document.getElementById('sliderContainer');
+
+      createDots();
+      goToSlide(0, false);
+      startAutoSlide();
+      addControls();
+      addSwipe();
+    }
+
+    function createDots(){
+      dotsContainer.innerHTML = "";
+      slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        dot.addEventListener('click', () => goToSlide(i, true));
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function updateDots(){
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+
+    function goToSlide(i, userAction=false){
+      index = (i + slides.length) % slides.length;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+      updateDots();
+      if (userAction) resetInterval();
+    }
+
+    function nextSlide(){ goToSlide(index + 1, true); }
+    function prevSlide(){ goToSlide(index - 1, true); }
+
+    function startAutoSlide(){
+      clearInterval(interval);
+      interval = setInterval(() => {
+        if (!isInteracting) goToSlide(index + 1, false);
+      }, 4500);
+    }
+
+    function resetInterval(){
+      clearInterval(interval);
+      startAutoSlide();
+    }
+
+    function addControls(){
+      document.addEventListener('keydown', (e) => {
+        if (mainEl.style.display !== "flex") return;
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+      });
+
+      sliderContainer.addEventListener('mouseenter', () => isInteracting = true);
+      sliderContainer.addEventListener('mouseleave', () => { isInteracting = false; });
+    }
+
+    function addSwipe(){
+      let startX = 0, currentX = 0, tracking = false;
+
+      sliderContainer.addEventListener('touchstart', (e) => {
+        isInteracting = true;
+        tracking = true;
+        startX = e.touches[0].clientX;
+        currentX = startX;
+      }, { passive: true });
+
+      sliderContainer.addEventListener('touchmove', (e) => {
+        if (!tracking) return;
+        currentX = e.touches[0].clientX;
+      }, { passive: true });
+
+      sliderContainer.addEventListener('touchend', () => {
+        if (!tracking) return;
+        const diff = currentX - startX;
+        const threshold = 50;
+        if (diff > threshold) prevSlide();
+        else if (diff < -threshold) nextSlide();
+        tracking = false;
+        isInteracting = false;
+        resetInterval();
+      });
+    }
+  </script>
+</body>
+</html>
